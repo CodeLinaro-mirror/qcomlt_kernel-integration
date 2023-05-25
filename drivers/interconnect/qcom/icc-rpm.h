@@ -45,6 +45,7 @@ struct rpm_clk_resource {
  * @regmap: regmap for QoS registers read/write access
  * @qos_offset: offset to QoS registers
  * @bus_clk_rate: bus clock rate in Hz
+ * @ab_percent: a percentage-based coefficient for compensating the AB calculations
  * @bus_clk_desc: a pointer to a rpm_clk_resource description of bus clocks
  * @bus_clk: a pointer to a HLOS-owned bus clock
  * @intf_clks: a clk_bulk_data array of interface clocks
@@ -58,6 +59,7 @@ struct qcom_icc_provider {
 	struct regmap *regmap;
 	unsigned int qos_offset;
 	u32 bus_clk_rate[QCOM_SMD_RPM_STATE_NUM];
+	u16 ab_percent;
 	const struct rpm_clk_resource *bus_clk_desc;
 	struct clk *bus_clk;
 	struct clk_bulk_data *intf_clks;
@@ -93,6 +95,7 @@ struct qcom_icc_qos {
  * @num_links: the total number of @links
  * @channels: number of channels at this node (e.g. DDR channels)
  * @buswidth: width of the interconnect between a node and the bus (bytes)
+ * @ib_percent: a percentage-based coefficient for compensating the IB calculations
  * @sum_avg: current sum aggregate value of all avg bw requests
  * @max_peak: current max aggregate value of all peak bw requests
  * @mas_rpm_id:	RPM id for devices that are bus masters
@@ -106,6 +109,7 @@ struct qcom_icc_node {
 	u16 num_links;
 	u16 channels;
 	u16 buswidth;
+	u16 ib_percent;
 	u64 sum_avg[QCOM_SMD_RPM_STATE_NUM];
 	u64 max_peak[QCOM_SMD_RPM_STATE_NUM];
 	int mas_rpm_id;
@@ -123,6 +127,7 @@ struct qcom_icc_desc {
 	enum qcom_icc_type type;
 	const struct regmap_config *regmap_cfg;
 	unsigned int qos_offset;
+	u16 ab_percent;
 };
 
 /* Valid for all bus types */

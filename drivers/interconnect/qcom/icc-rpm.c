@@ -298,9 +298,11 @@ static int qcom_icc_bw_aggregate(struct icc_node *node, u32 tag, u32 avg_bw,
  */
 static void qcom_icc_bus_aggregate(struct icc_provider *provider, u64 *agg_clk_rate)
 {
-	u64 agg_avg_rate, agg_rate;
+	struct qcom_icc_provider *qp = to_qcom_provider(provider);
+	u64 agg_avg_rate, agg_peak_rate, agg_rate;
 	struct qcom_icc_node *qn;
 	struct icc_node *node;
+	u16 percent;
 	int i;
 
 	/*
@@ -314,6 +316,12 @@ static void qcom_icc_bus_aggregate(struct icc_provider *provider, u64 *agg_clk_r
 				agg_avg_rate = div_u64(qn->sum_avg[i], qn->channels);
 			else
 				agg_avg_rate = qn->sum_avg[i];
+
+			percent = qp->ab_percent ? qp->ab_percent : 100;
+			agg_avg_rate = mult_frac(percent, agg_avg_rate, 100);
+
+			percent = qn->ib_percent ? qn->ib_percent : 100;
+			agg_peak_rate = mult_frac(percent, qn->max_peak[i], 100);
 
 			agg_rate = max_t(u64, agg_avg_rate, qn->max_peak[i]);
 			do_div(agg_rate, qn->buswidth);
