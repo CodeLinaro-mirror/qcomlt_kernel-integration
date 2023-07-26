@@ -1200,6 +1200,7 @@ static const struct qcom_icc_desc qcm2290_bimc = {
 	.keep_alive = true,
 	/* M_REG_BASE() in vendor msm_bus_bimc_adhoc driver */
 	.qos_offset = 0x8000,
+	.ab_percent = 153,
 };
 
 static struct qcom_icc_node * const qcm2290_cnoc_nodes[] = {
@@ -1330,6 +1331,7 @@ static const struct qcom_icc_desc qcm2290_mmnrt_virt = {
 	.regmap_cfg = &qcm2290_snoc_regmap_config,
 	.keep_alive = true,
 	.qos_offset = 0x15000,
+	.ab_percent = 142,
 };
 
 static struct qcom_icc_node * const qcm2290_mmrt_virt_nodes[] = {
@@ -1346,6 +1348,7 @@ static const struct qcom_icc_desc qcm2290_mmrt_virt = {
 	.regmap_cfg = &qcm2290_snoc_regmap_config,
 	.keep_alive = true,
 	.qos_offset = 0x15000,
+	.ab_percent = 139,
 };
 
 static const struct of_device_id qcm2290_noc_of_match[] = {
